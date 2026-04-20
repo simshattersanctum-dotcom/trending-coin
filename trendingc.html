@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRENDING — The Coin</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cyan: #00F5FF;
+  --orange: #FF6B1A;
+  --pink: #FF2D8A;
+  --gold: #FFD700;
+  --dark: #03030A;
+  --space: #070714;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--dark); color:white; font-family:'Orbitron',sans-serif; overflow-x:hidden; cursor:crosshair; }
+
+.stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
+.star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d) ease-in-out infinite; }
+@keyframes twinkle { 0%,100%{opacity:0.2;transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+
+.ticker-wrap { background:linear-gradient(90deg,var(--pink),var(--orange),var(--cyan),var(--pink)); background-size:300% 100%; animation:gradShift 4s linear infinite; padding:8px 0; overflow:hidden; white-space:nowrap; position:fixed; top:0;left:0;right:0; z-index:100; }
+@keyframes gradShift { 0%{background-position:0% 50%} 100%{background-position:300% 50%} }
+.ticker-inner { display:inline-block; animation:tickerMove 22s linear infinite; font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:4px; color:var(--dark); font-weight:900; }
+@keyframes tickerMove { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+.hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 20px 60px; position:relative; overflow:hidden; text-align:center; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(0,245,255,0.06) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 20% 80%,rgba(255,45,138,0.08) 0%,transparent 60%),radial-gradient(ellipse 40% 30% at 80% 20%,rgba(255,107,26,0.08) 0%,transparent 60%); }
+
+.speed-lines { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.speed-line { position:absolute; height:1px; background:linear-gradient(90deg,transparent,rgba(0,245,255,0.25),transparent); animation:speedLine var(--d) linear infinite; transform:rotate(-12deg); }
+@keyframes speedLine { 0%{transform:translateX(-200%) rotate(-12deg);opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{transform:translateX(250%) rotate(-12deg);opacity:0} }
+
+.coin-wrap { position:relative; width:220px; height:220px; margin:0 auto 40px; z-index:2; }
+.coin-img { width:220px; height:220px; border-radius:50%; object-fit:cover; border:3px solid var(--cyan); animation:coinGlow 2s ease-in-out infinite; }
+.coin-placeholder { width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,#0a0a2a 0%,var(--dark) 100%); border:3px solid var(--cyan); display:flex; align-items:center; justify-content:center; font-family:'Russo One',sans-serif; font-size:52px; color:var(--cyan); animation:coinGlow 2s ease-in-out infinite; }
+@keyframes coinGlow { 0%,100%{box-shadow:0 0 40px var(--cyan),0 0 80px rgba(0,245,255,0.3)} 50%{box-shadow:0 0 70px var(--cyan),0 0 140px rgba(0,245,255,0.5),0 0 200px rgba(0,245,255,0.2)} }
+.ring1{position:absolute;inset:-14px;border-radius:50%;border:2px solid rgba(0,245,255,0.3);animation:ringP 2s ease-in-out infinite;}
+.ring2{position:absolute;inset:-28px;border-radius:50%;border:1px solid rgba(255,45,138,0.2);animation:ringP 2s ease-in-out infinite 0.4s;}
+.ring3{position:absolute;inset:-44px;border-radius:50%;border:1px solid rgba(255,107,26,0.15);animation:ringP 2s ease-in-out infinite 0.8s;}
+@keyframes ringP { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
+.fi{position:absolute;font-size:22px;animation:orbit var(--d) linear infinite;}
+@keyframes orbit { 0%{transform:rotate(0deg) translateX(130px) rotate(0deg)} 100%{transform:rotate(360deg) translateX(130px) rotate(-360deg)} }
+
+.hero-title { font-family:'Russo One',sans-serif; font-size:clamp(72px,15vw,164px); line-height:0.85; position:relative; z-index:2; letter-spacing:-2px; animation:titleIn 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes titleIn { from{opacity:0;transform:scale(0.8) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.tl1 { display:block; background:linear-gradient(90deg,var(--cyan),white,var(--cyan)); background-size:200% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shimmer 3s linear infinite; }
+.tl2 { display:block; background:linear-gradient(90deg,var(--orange),var(--pink),var(--gold),var(--orange)); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shimmer 2s linear infinite reverse; }
+@keyframes shimmer { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+
+.quote-wrap { margin:40px auto 0; max-width:660px; position:relative; z-index:2; animation:fadeUp 0.8s ease 0.4s both; border:1px solid rgba(0,245,255,0.2); padding:28px 36px; background:rgba(0,245,255,0.03); }
+.quote-wrap::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+.quote-wrap::after { content:''; position:absolute; bottom:0;left:0;right:0; height:2px; background:linear-gradient(90deg,transparent,var(--pink),transparent); }
+.quote { font-family:'Orbitron',sans-serif; font-size:clamp(15px,2.8vw,21px); font-weight:700; color:var(--gold); line-height:1.4; letter-spacing:1px; }
+.quote-credit { font-family:'Share Tech Mono',monospace; font-size:11px; color:rgba(255,255,255,0.3); margin-top:12px; letter-spacing:3px; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.cta-wrap { margin-top:40px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; z-index:2; position:relative; animation:fadeUp 0.8s ease 0.6s both; }
+.btn-buy { display:inline-block; background:linear-gradient(135deg,var(--cyan),var(--pink)); color:var(--dark); font-family:'Russo One',sans-serif; font-size:20px; letter-spacing:3px; padding:18px 56px; text-decoration:none; position:relative; overflow:hidden; transition:transform 0.2s; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); }
+.btn-buy:hover { transform:scale(1.05) translateY(-2px); }
+.btn-x { display:inline-block; background:transparent; color:var(--cyan); font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; padding:18px 32px; text-decoration:none; border:1px solid rgba(0,245,255,0.3); transition:all 0.2s; }
+.btn-x:hover { border-color:var(--cyan); background:rgba(0,245,255,0.05); }
+
+.stats { margin:60px auto 0; display:grid; grid-template-columns:repeat(4,1fr); max-width:800px; width:100%; border:1px solid rgba(0,245,255,0.15); z-index:2; position:relative; animation:fadeUp 0.8s ease 0.7s both; }
+.stat { padding:24px 16px; text-align:center; border-right:1px solid rgba(0,245,255,0.15); transition:background 0.3s; }
+.stat:hover { background:rgba(0,245,255,0.04); }
+.stat:last-child { border-right:none; }
+.stat-val { font-family:'Russo One',sans-serif; font-size:36px; color:var(--cyan); display:block; line-height:1; text-shadow:0 0 20px rgba(0,245,255,0.5); }
+.stat-label { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:2px; color:rgba(255,255,255,0.3); margin-top:8px; display:block; text-transform:uppercase; }
+
+.banner { width:100%; height:280px; position:relative; overflow:hidden; }
+.banner-bg { width:100%; height:100%; object-fit:cover; opacity:0.5; }
+.banner-placeholder { width:100%; height:100%; background:linear-gradient(135deg,#030320 0%,#0a0035 40%,#200015 70%,#030320 100%); display:flex; align-items:center; justify-content:center; }
+.banner-overlay { position:absolute; inset:0; background:linear-gradient(to right,var(--dark) 0%,transparent 20%,transparent 80%,var(--dark) 100%); }
+.banner-text { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Russo One',sans-serif; font-size:clamp(50px,12vw,120px); letter-spacing:-2px; background:linear-gradient(90deg,var(--cyan),var(--pink),var(--gold),var(--orange)); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shimmer 3s linear infinite; }
+
+.pitch { padding:80px 40px; max-width:860px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+.section-tag { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:6px; color:var(--pink); text-transform:uppercase; margin-bottom:20px; display:block; }
+.pitch-title { font-family:'Russo One',sans-serif; font-size:clamp(36px,7vw,68px); line-height:0.95; letter-spacing:-1px; margin-bottom:48px; color:white; }
+.pitch-title em { font-style:normal; color:var(--orange); }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(0,245,255,0.1); border:1px solid rgba(0,245,255,0.1); }
+.card { background:var(--space); padding:40px 32px; text-align:left; position:relative; transition:background 0.3s; }
+.card:hover { background:rgba(0,245,255,0.03); }
+.card-num { font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:4px; color:rgba(0,245,255,0.4); margin-bottom:16px; display:block; }
+.card-title { font-family:'Russo One',sans-serif; font-size:22px; color:white; margin-bottom:10px; line-height:1.1; }
+.card-body { font-family:'Share Tech Mono',monospace; font-size:12px; color:rgba(255,255,255,0.4); line-height:1.8; letter-spacing:1px; }
+
+.bottom-cta { padding:120px 40px; text-align:center; position:relative; z-index:1; overflow:hidden; }
+.bottom-cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,245,255,0.05) 0%,transparent 70%); }
+.bottom-title { font-family:'Russo One',sans-serif; font-size:clamp(32px,6vw,62px); line-height:1; margin-bottom:12px; position:relative; z-index:1; color:white; }
+.bottom-sub { font-family:'Share Tech Mono',monospace; font-size:13px; color:rgba(255,255,255,0.3); letter-spacing:4px; margin-bottom:48px; position:relative; z-index:1; }
+
+footer { padding:28px 40px; border-top:1px solid rgba(0,245,255,0.1); display:flex; justify-content:space-between; align-items:center; font-family:'Share Tech Mono',monospace; font-size:10px; color:rgba(255,255,255,0.2); letter-spacing:3px; position:relative; z-index:1; }
+footer a { color:rgba(255,255,255,0.2); text-decoration:none; transition:color 0.2s; }
+footer a:hover { color:var(--cyan); }
+
+@media(max-width:640px){
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .cards{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:12px;text-align:center;}
+  .btn-x{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    &nbsp;&nbsp; $TRENDING &nbsp;★&nbsp; @TrendingHereNow &nbsp;★&nbsp; SOLANA &nbsp;★&nbsp; BUY THIS COIN &nbsp;★&nbsp; NO WHITEPAPER NEEDED &nbsp;★&nbsp; YOU ALREADY KNOW &nbsp;★&nbsp; $TRENDING &nbsp;★&nbsp; @TrendingHereNow &nbsp;★&nbsp; SOLANA &nbsp;★&nbsp; BUY THIS COIN &nbsp;★&nbsp; NO WHITEPAPER NEEDED &nbsp;★&nbsp; YOU ALREADY KNOW &nbsp;★&nbsp;
+  </div>
+</div>
+
+<section class="hero">
+  <div class="speed-lines" id="speedLines"></div>
+
+  <!-- COIN: replace coin-placeholder with <img src="Trending.jpg" class="coin-img" alt="TRENDING"> -->
+  <div class="coin-wrap">
+    <div class="ring1"></div>
+    <div class="ring2"></div>
+    <div class="ring3"></div>
+    <div class="fi" style="--d:6s;">🚀</div>
+    <div class="fi" style="--d:9s;animation-delay:-3s;">⚡</div>
+    <div class="fi" style="--d:12s;animation-delay:-6s;">🔥</div>
+    <div class="coin-placeholder">T</div>
+  </div>
+
+  <h1 class="hero-title">
+    <span class="tl1">THIS IS</span>
+    <span class="tl2">TRENDING</span>
+  </h1>
+
+  <div class="quote-wrap">
+    <p class="quote">"Buy this coin to see real world Trending."</p>
+    <p class="quote-credit">— that's the whitepaper. you're done researching.</p>
+  </div>
+
+  <div class="cta-wrap">
+    <a href="https://pump.fun" target="_blank" class="btn-buy">BUY NOW</a>
+    <a href="https://x.com/TrendingHereNow" target="_blank" class="btn-x">@TrendingHereNow</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-val">0</span><span class="stat-label">Promises Made</span></div>
+    <div class="stat"><span class="stat-val">0</span><span class="stat-label">Things To Research</span></div>
+    <div class="stat"><span class="stat-val">∞</span><span class="stat-label">Vibes</span></div>
+    <div class="stat"><span class="stat-val">1</span><span class="stat-label">Reason To Buy</span></div>
+  </div>
+</section>
+
+<!-- BANNER: replace banner-placeholder div with <img src="TB.jpg" class="banner-bg" alt="Trending Banner"> -->
+<div class="banner">
+  <div class="banner-placeholder"></div>
+  <div class="banner-overlay"></div>
+  <div class="banner-text">TRENDING</div>
+</div>
+
+<section class="pitch">
+  <span class="section-tag">The Full Research Report</span>
+  <h2 class="pitch-title">Everything<br>you need to <em>know.</em></h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card-num">01 / WHAT IS IT</span>
+      <div class="card-title">It's called Trending.</div>
+      <div class="card-body">On Solana. That's the whole concept. You already understand it or you don't.</div>
+    </div>
+    <div class="card">
+      <span class="card-num">02 / THE UTILITY</span>
+      <div class="card-title">To be Trending.</div>
+      <div class="card-body">No staking. No roadmap. No dao. Just the word and what it means.</div>
+    </div>
+    <div class="card">
+      <span class="card-num">03 / THE RESEARCH</span>
+      <div class="card-title">You're done.</div>
+      <div class="card-body">You just read the whitepaper. The full one. That was it.</div>
+    </div>
+    <div class="card">
+      <span class="card-num">04 / THE PLAY</span>
+      <div class="card-title">Buy it to see what happens.</div>
+      <div class="card-body">That IS the point. Welcome to real world Trending.</div>
+    </div>
+  </div>
+</section>
+
+<section class="bottom-cta">
+  <h2 class="bottom-title">You've done enough research.</h2>
+  <p class="bottom-sub">CA drops at @TrendingHereNow &nbsp;·&nbsp; Solana</p>
+  <a href="https://pump.fun" target="_blank" class="btn-buy" style="font-size:22px;padding:22px 72px;position:relative;z-index:1;">BUY $TRENDING</a>
+</section>
+
+<footer>
+  <span>$TRENDING &nbsp;·&nbsp; SOLANA</span>
+  <a href="https://x.com/TrendingHereNow" target="_blank">@TrendingHereNow</a>
+  <span>not financial advice. obviously.</span>
+</footer>
+
+<script>
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 180; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2 + 0.5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${-Math.random()*4}s;`;
+  starsEl.appendChild(s);
+}
+const linesEl = document.getElementById('speedLines');
+for (let i = 0; i < 10; i++) {
+  const l = document.createElement('div');
+  l.className = 'speed-line';
+  l.style.cssText = `width:${200+Math.random()*300}px;top:${Math.random()*100}%;--d:${3+Math.random()*4}s;animation-delay:${-Math.random()*7}s;`;
+  linesEl.appendChild(l);
+}
+const tl2 = document.querySelector('.tl2');
+setInterval(() => {
+  if (Math.random() > 0.93) {
+    tl2.style.transform = `translateX(${(Math.random()-0.5)*10}px)`;
+    tl2.style.filter = 'hue-rotate(40deg)';
+    setTimeout(() => { tl2.style.transform=''; tl2.style.filter=''; }, 80);
+  }
+}, 400);
+</script>
+</body>
+</html>
